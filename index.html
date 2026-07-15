@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Manutenção de Empilhadores</title>
+    <title>Manutenção de Empilhadores</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
     <style>
         body { font-family: sans-serif; background-color: #f4f4f9; padding: 20px; color: #333; }
         .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -23,7 +25,6 @@
         <h1>Livro de Bordo - Manutenção</h1>
         <form id="manutencaoForm">
             <div class="form-group"><label>1. Nome do condutor</label><input type="text" required></div>
-            
             <div class="form-group"><label>2. Deslocação</label>
                 <div class="radio-group">
                     <label><input type="radio" name="deslocacao" value="Manhã" required> Manhã</label>
@@ -31,7 +32,6 @@
                     <label><input type="radio" name="deslocacao" value="Noite" required> Noite</label>
                 </div>
             </div>
-
             <div class="form-group"><label>3. Máquina</label>
                 <div class="radio-group">
                     <label><input type="radio" name="maquina" value="Linde E16" required> Linde E16</label>
@@ -40,46 +40,44 @@
                     <label><input type="radio" name="maquina" value="Linde P60" required> Linde P60</label>
                 </div>
             </div>
-            
             <div id="checklistItems"></div>
-
             <div class="form-group"><label>U. Outras observações</label>
-                <span class="description">indicar as anomalias detectadas em outros elementos que não apareçam nesta lista (limpeza geral, eliminação de adornos, pintura deteriorada e outros elementos no empilhador)</span>
+                <span class="description">indicar as anomalias detectadas em outros elementos</span>
                 <textarea rows="3"></textarea>
             </div>
             <div class="form-group"><label>V. Contador de horas</label>
                 <span class="description">anotar as horas que aparecem no contador existente</span>
                 <input type="text" required>
             </div>
-
             <button type="submit" class="btn-submit">Submeter Registo</button>
         </form>
     </div>
-
     <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
         const items = [
-            {t: "A. Gotas/óleo no chão", d: "verificar a existência de fugas de fluidos sob o equipamento."},
-            {t: "B. Cortes nos pneus, deformações e parafusos soltos", d: "inspecionar o estado geral da borracha e a fixação das rodas."},
-            {t: "C. Deformação dos garfos - se existir sistema de deslocação dos garfos verificar o seu funcionamento", d: "avaliar a integridade estrutural dos garfos e a fluidez do mecanismo de posicionamento."},
-            {t: "D. Parafusos de fixação e estado do eixo e bola de reboque", d: "confirmar o aperto das fixações e a integridade do sistema de reboque."},
-            {t: "E. Estado - verificar se os garfos não se arrastam pelo chão", d: "durante a condução, ganchos ou retenções das correntes e barulhos anormais."},
-            {t: "F. Verificar no interior da torre se está algo a roçar", d: "durante a condução, ruídos típicos de rolamentos em mau estado."},
-            {t: "G. Verificar os indicadores", d: "confirmar se todos os mostradores e luzes de aviso do painel funcionam corretamente."},
-            {t: "H. Mediante indicadores de nível", d: "óleo motor, água, líquido dos travões, óleo hidráulico: levantar os garfos ao máximo e comprovar que não se produzem vibrações."},
-            {t: "I. Terminais e cabos", d: "não têm corrosão, conectores apresentam sobreaquecimentos por mau contacto, ver se existe cabos descarnados ou cortados."},
-            {t: "J. Estado dos elementos e seus acessórios", d: "verificar a integridade física de todos os componentes periféricos e peças acopladas."},
-            {t: "K. Verificar se está limpo e em bom estado", d: "se é possível ver através do tejadilho."},
-            {t: "L. Verificar do posto de condução o seu funcionamento", d: "testar todos os comandos operacionais a partir da posição de condução."},
-            {t: "M. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
-            {t: "N. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
-            {t: "O. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
-            {t: "P. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
-            {t: "Q. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
-            {t: "R. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
-            {t: "S. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
-            {t: "T. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."}
+            {t: "A. Gotas/óleo no chão", d: "verificar a existência de fugas de fluidos."},
+            {t: "B. Cortes nos pneus, deformações e parafusos soltos", d: "inspecionar o estado geral da borracha e fixação."},
+            {t: "C. Deformação dos garfos", d: "avaliar integridade estrutural e funcionamento da deslocação."},
+            {t: "D. Parafusos de fixação e eixo de reboque", d: "confirmar o aperto das fixações."},
+            {t: "E. Estado - arrastamento de garfos e correntes", d: "observar ruídos anormais e estado das correntes."},
+            {t: "F. Interior da torre", d: "verificar ruídos de rolamentos ou atritos."},
+            {t: "G. Verificar os indicadores", d: "confirmar mostradores e luzes."},
+            {t: "H. Níveis de fluidos", d: "óleo motor, água, travões e hidráulico."},
+            {t: "I. Terminais e cabos elétricos", d: "verificar corrosão e sobreaquecimento."},
+            {t: "J. Elementos e acessórios", d: "verificar integridade geral."},
+            {t: "K. Limpeza e tejadilho", d: "assegurar visibilidade e limpeza."},
+            {t: "L. Posto de condução", d: "testar todos os comandos."},
+            {t: "M. Funcionamento geral", d: "testar componente."},
+            {t: "N. Funcionamento geral", d: "testar componente."},
+            {t: "O. Funcionamento geral", d: "testar componente."},
+            {t: "P. Funcionamento geral", d: "testar componente."},
+            {t: "Q. Funcionamento geral", d: "testar componente."},
+            {t: "R. Funcionamento geral", d: "testar componente."},
+            {t: "S. Funcionamento geral", d: "testar componente."},
+            {t: "T. Funcionamento geral", d: "testar componente."}
         ];
-        
         const container = document.getElementById('checklistItems');
         items.forEach((item, index) => {
             const div = document.createElement('div');
@@ -95,11 +93,6 @@
             `;
             container.appendChild(div);
         });
-
-        document.getElementById('manutencaoForm').onsubmit = (e) => {
-            e.preventDefault();
-            alert("Registo submetido com sucesso!");
-        };
     </script>
 </body>
 </html>
