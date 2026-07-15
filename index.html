@@ -53,7 +53,11 @@
         }
         
         .radio-group { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
-        .radio-group label { 
+        
+        /* Ajuste para 2x2 */
+        .radio-group-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        
+        .radio-group label, .radio-group-2x2 label { 
             flex: 1; text-align: center; padding: 20px; background: #f0f0f0; 
             border-radius: 15px; cursor: pointer; font-size: 22px; font-weight: bold; border: 2px solid #ccc; 
         }
@@ -78,7 +82,7 @@
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
-        <div class="version">v2.2.1</div>
+        <div class="version">v2.3.1</div>
     </div>
     <h1>Manutenção</h1>
     <form id="manutencaoForm">
@@ -98,16 +102,16 @@
         </div>
         <div class="card">
             <label>Turno</label>
-            <div class="radio-group">
+            <div class="radio-group-2x2">
                 <label class="radio-ok"><input type="radio" name="turno" value="Manhã" required> Manhã</label>
                 <label class="radio-ok"><input type="radio" name="turno" value="Tarde" required> Tarde</label>
                 <label class="radio-ok"><input type="radio" name="turno" value="Noite" required> Noite</label>
-                <label class="radio-ok"><input type="radio" name="turno" value="Fim de Semana" required> FDS</label>
+                <label class="radio-ok"><input type="radio" name="turno" value="Fim de Semana" required> Fim de Semana</label>
             </div>
         </div>
         <div class="card">
             <label>Máquina</label>
-            <div class="radio-group">
+            <div class="radio-group-2x2">
                 <label class="radio-machine"><input type="radio" name="maquina" value="Linde E16" required> E16</label>
                 <label class="radio-machine"><input type="radio" name="maquina" value="Linde E20" required> E20</label>
                 <label class="radio-machine"><input type="radio" name="maquina" value="Linde E30" required> E30</label>
