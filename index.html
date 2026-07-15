@@ -4,95 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manutenção de Empilhadores</title>
-    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2c3e50">
     <style>
-        body { font-family: sans-serif; background-color: #f4f4f9; padding: 20px; color: #333; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; font-size: 1.5em; text-align: center; }
-        .form-group { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        .description { display: block; font-style: italic; font-size: 0.85em; color: #666; margin-bottom: 8px; }
-        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .radio-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px; }
-        .radio-group label { font-weight: normal; cursor: pointer; }
-        .btn-submit { width: 100%; padding: 15px; background-color: #2c3e50; color: white; border: none; border-radius: 4px; font-size: 1em; cursor: pointer; }
-        .btn-submit:hover { background-color: #34495e; }
+        :root { 
+            --primary: #2c3e50; 
+            --success: #27ae60; 
+            --danger: #e74c3c; 
+            --bg: #f4f7f6; 
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; color: #333; }
+        .container { max-width: 500px; margin: auto; }
+        h1 { text-align: center; color: var(--primary); font-size: 1.4em; margin-bottom: 20px; }
+        
+        .card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        
+        label { font-weight: 600; display: block; margin-bottom: 5px; font-size: 0.95em; }
+        .description { font-size: 0.8em; color: #7f8c8d; font-style: italic; display: block; margin-bottom: 12px; }
+
+        /* Imagens maiores (50px) */
+        .icon-container { display: flex; gap: 8px; flex-shrink: 0; }
+        .icon-container img { width: 50px; height: 50px; object-fit: contain; }
+
+        .radio-group { display: flex; gap: 10px; margin-bottom: 10px; }
+        .radio-group label { flex: 1; text-align: center; padding: 12px; background: #eee; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: bold; font-size: 0.9em; }
+        
+        input[type="radio"] { display: none; }
+        .radio-ok:has(input:checked) { background: var(--success); color: white; }
+        .radio-nok:has(input:checked) { background: var(--danger); color: white; }
+
+        input[type="text"], textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; margin-top: 5px; }
+        .btn-submit { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Livro de Bordo - Manutenção</h1>
-        <form id="manutencaoForm">
-            <div class="form-group"><label>1. Nome do condutor</label><input type="text" required></div>
-            <div class="form-group"><label>2. Deslocação</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="deslocacao" value="Manhã" required> Manhã</label>
-                    <label><input type="radio" name="deslocacao" value="Tarde" required> Tarde</label>
-                    <label><input type="radio" name="deslocacao" value="Noite" required> Noite</label>
+
+<div class="container">
+    <h1>Manutenção de Empilhadores</h1>
+    <form id="manutencaoForm">
+        <div class="card">
+            <label>Nome do condutor</label>
+            <input type="text" required>
+        </div>
+
+        <div class="card">
+            <label>Turno</label>
+            <div class="radio-group">
+                <label class="radio-ok"><input type="radio" name="deslocacao" value="Manhã" required> Manhã</label>
+                <label class="radio-ok"><input type="radio" name="deslocacao" value="Tarde" required> Tarde</label>
+                <label class="radio-ok"><input type="radio" name="deslocacao" value="Noite" required> Noite</label>
+            </div>
+        </div>
+
+        <div class="card">
+            <label>Máquina</label>
+            <select name="maquina" required>
+                <option value="">Selecione a máquina</option>
+                <option value="Linde E16">Linde E16</option>
+                <option value="Linde E20">Linde E20</option>
+                <option value="Linde E30">Linde E30</option>
+                <option value="Linde P60">Linde P60</option>
+            </select>
+        </div>
+
+        <div id="checklistItems"></div>
+
+        <div class="card">
+            <div class="header-row">
+                <div>
+                    <label>U. Outras observações</label>
+                    <span class="description">anomalias detetadas</span>
+                </div>
+                <div class="icon-container">
+                    <img src="https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832" alt="visual">
+                    <img src="https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5" alt="auditivo">
                 </div>
             </div>
-            <div class="form-group"><label>3. Máquina</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="maquina" value="Linde E16" required> Linde E16</label>
-                    <label><input type="radio" name="maquina" value="Linde E20" required> Linde E20</label>
-                    <label><input type="radio" name="maquina" value="Linde E30" required> Linde E30</label>
-                    <label><input type="radio" name="maquina" value="Linde P60" required> Linde P60</label>
+            <textarea rows="3"></textarea>
+        </div>
+
+        <div class="card">
+            <div class="header-row">
+                <label>V. Contador de horas</label>
+                <img src="https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832" alt="visual" style="width: 50px; height: 50px;">
+            </div>
+            <input type="text" required placeholder="Inserir horas">
+        </div>
+
+        <button type="submit" class="btn-submit">Submeter Registo</button>
+    </form>
+</div>
+
+<script>
+    const icons = {
+        testar: "https://github.com/user-attachments/assets/c2c7b561-23f1-48c3-8dc7-727cfba486c2",
+        auditivo: "https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5",
+        visual: "https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832"
+    };
+
+    const items = [
+        {t: "A. Gotas/óleo no chão", d: "verificar fugas.", ic: ['visual']},
+        {t: "B. Cortes nos pneus", d: "inspecionar estado geral.", ic: ['visual']},
+        {t: "C. Deformação dos garfos", d: "avaliar integridade.", ic: ['visual']},
+        {t: "D. Parafusos de fixação", d: "confirmar o aperto.", ic: ['visual']},
+        {t: "E. Arrastamento de garfos e correntes", d: "observar ruídos.", ic: ['visual', 'auditivo']},
+        {t: "F. Interior da torre", d: "verificar ruídos.", ic: ['visual', 'auditivo']},
+        {t: "G. Indicadores", d: "confirmar luzes.", ic: ['visual']},
+        {t: "H. Níveis de fluidos", d: "óleo, água, travões.", ic: ['visual', 'testar']},
+        {t: "I. Terminais elétricos", d: "verificar corrosão.", ic: ['visual']},
+        {t: "J. Elementos e acessórios", d: "integridade geral.", ic: ['visual']},
+        {t: "K. Limpeza e tejadilho", d: "visibilidade.", ic: ['visual']},
+        {t: "L. Posto de condução", d: "testar todos os comandos.", ic: ['testar']},
+        {t: "M. Funcionamento geral", d: "testar componente.", ic: ['testar']},
+        {t: "N. Funcionamento geral", d: "testar componente.", ic: ['testar']},
+        {t: "O. Funcionamento geral", d: "testar componente.", ic: ['testar']},
+        {t: "P. Funcionamento geral", d: "testar componente.", ic: ['testar']},
+        {t: "Q. Funcionamento geral", d: "testar componente.", ic: ['testar']},
+        {t: "R. Funcionamento geral", d: "testar componente.", ic: ['testar']},
+        {t: "S. Funcionamento geral", d: "testar componente.", ic: ['testar']},
+        {t: "T. Funcionamento geral", d: "testar componente.", ic: ['testar']}
+    ];
+
+    const container = document.getElementById('checklistItems');
+    items.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        const iconsHtml = item.ic.map(i => `<img src="${icons[i]}" alt="${i}">`).join('');
+        div.innerHTML = `
+            <div class="header-row">
+                <div>
+                    <label>${item.t}</label>
+                    <span class="description">${item.d}</span>
                 </div>
+                <div class="icon-container">${iconsHtml}</div>
             </div>
-            <div id="checklistItems"></div>
-            <div class="form-group"><label>U. Outras observações</label>
-                <span class="description">indicar as anomalias detectadas em outros elementos</span>
-                <textarea rows="3"></textarea>
+            <div class="radio-group">
+                <label class="radio-ok"><input type="radio" name="item_${index}" value="OK" required> OK</label>
+                <label class="radio-nok"><input type="radio" name="item_${index}" value="NOK" required> NOK</label>
             </div>
-            <div class="form-group"><label>V. Contador de horas</label>
-                <span class="description">anotar as horas que aparecem no contador existente</span>
-                <input type="text" required>
-            </div>
-            <button type="submit" class="btn-submit">Submeter Registo</button>
-        </form>
-    </div>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-        const items = [
-            {t: "A. Gotas/óleo no chão", d: "verificar a existência de fugas de fluidos."},
-            {t: "B. Cortes nos pneus, deformações e parafusos soltos", d: "inspecionar o estado geral da borracha e fixação."},
-            {t: "C. Deformação dos garfos", d: "avaliar integridade estrutural e funcionamento da deslocação."},
-            {t: "D. Parafusos de fixação e eixo de reboque", d: "confirmar o aperto das fixações."},
-            {t: "E. Estado - arrastamento de garfos e correntes", d: "observar ruídos anormais e estado das correntes."},
-            {t: "F. Interior da torre", d: "verificar ruídos de rolamentos ou atritos."},
-            {t: "G. Verificar os indicadores", d: "confirmar mostradores e luzes."},
-            {t: "H. Níveis de fluidos", d: "óleo motor, água, travões e hidráulico."},
-            {t: "I. Terminais e cabos elétricos", d: "verificar corrosão e sobreaquecimento."},
-            {t: "J. Elementos e acessórios", d: "verificar integridade geral."},
-            {t: "K. Limpeza e tejadilho", d: "assegurar visibilidade e limpeza."},
-            {t: "L. Posto de condução", d: "testar todos os comandos."},
-            {t: "M. Funcionamento geral", d: "testar componente."},
-            {t: "N. Funcionamento geral", d: "testar componente."},
-            {t: "O. Funcionamento geral", d: "testar componente."},
-            {t: "P. Funcionamento geral", d: "testar componente."},
-            {t: "Q. Funcionamento geral", d: "testar componente."},
-            {t: "R. Funcionamento geral", d: "testar componente."},
-            {t: "S. Funcionamento geral", d: "testar componente."},
-            {t: "T. Funcionamento geral", d: "testar componente."}
-        ];
-        const container = document.getElementById('checklistItems');
-        items.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'form-group';
-            div.innerHTML = `
-                <label>${item.t}</label>
-                <span class="description">${item.d}</span>
-                <div class="radio-group">
-                    <label><input type="radio" name="item_${index}" value="OK" required> OK</label>
-                    <label><input type="radio" name="item_${index}" value="NOK" required> NOK</label>
-                </div>
-                <input type="text" placeholder="Explicar se NOK" style="margin-top:5px;">
-            `;
-            container.appendChild(div);
-        });
-    </script>
+            <input type="text" placeholder="Explicar se NOK">
+        `;
+        container.appendChild(div);
+    });
+</script>
 </body>
 </html>
