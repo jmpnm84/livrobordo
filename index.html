@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Manutenção de Empilhadores</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; padding: 20px; color: #333; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; font-size: 1.5em; text-align: center; }
+        .form-group { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .radio-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px; }
+        .radio-group label { font-weight: normal; cursor: pointer; }
+        .btn-submit { width: 100%; padding: 15px; background-color: #2c3e50; color: white; border: none; border-radius: 4px; font-size: 1em; cursor: pointer; }
+        .btn-submit:hover { background-color: #34495e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Livro de Bordo - Manutenção</h1>
+        <form id="manutencaoForm">
+            <div class="form-group"><label>1. Nome do condutor</label><input type="text" required></div>
+            <div class="form-group"><label>2. Deslocação</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="deslocacao" value="Manhã" required> Manhã</label>
+                    <label><input type="radio" name="deslocacao" value="Tarde" required> Tarde</label>
+                    <label><input type="radio" name="deslocacao" value="Noite" required> Noite</label>
+                </div>
+            </div>
+            <div class="form-group"><label>3. Máquina</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="maquina" value="Linde E16" required> Linde E16</label>
+                    <label><input type="radio" name="maquina" value="Linde E20" required> Linde E20</label>
+                    <label><input type="radio" name="maquina" value="Linde E30" required> Linde E30</label>
+                    <label><input type="radio" name="maquina" value="Linde P60" required> Linde P60</label>
+                </div>
+            </div>
+            
+            <div id="checklistItems"></div>
+
+            <div class="form-group"><label>U. Outras observações</label><textarea rows="3"></textarea></div>
+            <div class="form-group"><label>V. Contador de horas</label><input type="text" required></div>
+
+            <button type="submit" class="btn-submit">Submeter Registo</button>
+        </form>
+    </div>
+
+    <script>
+        const items = [
+            "A - Fugas de óleo", "B - Pneumáticos e rodas", "C - Garfos", 
+            "D - Engate de tração", "E - Cadeados de elevação", "F - Rolamentos e mastro", 
+            "G - Autonomia bateria/combustível", "H - Níveis de fluidos", "I - Bateria (cabos/conector)", 
+            "J - Proteção do condutor", "K - Tejadilho", "L - Dispositivo de presença", 
+            "M - Travões", "N - Pedal de segurança", "O - Buzina/pirilampo", 
+            "P - Luzes e piscas", "Q - Elevação e inclinação", "R - Chave de ignição", 
+            "S - Direcção", "T - Cinto de segurança"
+        ];
+        
+        const container = document.getElementById('checklistItems');
+        items.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'form-group';
+            div.innerHTML = `
+                <label>${item}</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="item_${index}" value="OK" required> OK</label>
+                    <label><input type="radio" name="item_${index}" value="NOK" required> NOK</label>
+                </div>
+                <input type="text" placeholder="Explicar se NOK" style="margin-top:5px;">
+            `;
+            container.appendChild(div);
+        });
+
+        document.getElementById('manutencaoForm').onsubmit = (e) => {
+            e.preventDefault();
+            const maquinaSelecionada = document.querySelector('input[name="maquina"]:checked').value;
+            alert("Registo submetido com sucesso para a máquina: " + maquinaSelecionada);
+        };
+    </script>
+</body>
+</html>
