@@ -3,51 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
     <title>Manutenção de Empilhadores</title>
     <style>
         :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
         
-        /* Ajustes para preencher toda a largura */
-        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 10px; color: #333; font-size: 18px; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            padding: 16px; 
+            color: #333; 
+            font-size: 18px; 
+            line-height: 1.5;
+        }
         
-        .container { width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; }
+        .container { width: 100%; max-width: 500px; margin: 0 auto; }
         
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
-        .logo-area img { height: 45px; width: auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .logo-area img { height: 50px; width: auto; }
         .version { font-size: 0.9em; color: #7f8c8d; font-weight: bold; }
         
-        h1 { text-align: center; color: var(--primary); font-size: 1.5em; margin-bottom: 20px; }
+        h1 { text-align: center; color: var(--primary); font-size: 1.6em; margin-bottom: 24px; }
         
-        .card { background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #eee; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card { 
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: 16px; 
+            margin-bottom: 16px; 
+            border: 1px solid #e0e0e0; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
+        }
         
-        .header-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         
-        label { font-weight: 700; display: block; margin-bottom: 5px; font-size: 1.05em; }
+        label { font-weight: 700; font-size: 1.1em; color: #2c3e50; }
         
-        .description { font-size: 0.85em; color: #555; font-style: italic; display: block; margin-bottom: 12px; line-height: 1.4; }
+        .description { font-size: 0.9em; color: #666; font-style: italic; margin-bottom: 16px; display: block; }
         
         .icon-container { display: flex; gap: 8px; flex-shrink: 0; }
-        .icon-container img { width: 30px; height: 30px; object-fit: contain; }
+        .icon-container img { width: 32px; height: 32px; object-fit: contain; }
         
-        .radio-group { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-        .radio-group label { flex: 1; min-width: 42%; text-align: center; padding: 14px 10px; background: #f8f8f8; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: bold; font-size: 0.95em; border: 1px solid #ddd; margin: 0; }
+        .radio-group { display: flex; gap: 12px; margin-top: 8px; }
+        .radio-group label { 
+            flex: 1; 
+            text-align: center; 
+            padding: 16px; 
+            background: #f0f0f0; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            font-weight: 600; 
+            border: 2px solid #e0e0e0; 
+        }
         
         input[type="radio"] { display: none; }
         
-        .radio-ok:has(input:checked) { background: var(--success); color: white; border-color: var(--success); }
-        .radio-nok:has(input:checked) { background: var(--danger); color: white; border-color: var(--danger); }
-        .radio-machine:has(input:checked) { background: var(--primary); color: white; border-color: var(--primary); }
+        .radio-ok:has(input:checked) { background: var(--success); color: white; border-color: #219150; }
+        .radio-nok:has(input:checked) { background: var(--danger); color: white; border-color: #c0392b; }
+        .radio-machine:has(input:checked) { background: var(--primary); color: white; border-color: #1a252f; }
         
-        select, input[type="text"], textarea { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; margin-top: 5px; background: white; }
+        select, input[type="text"], textarea { 
+            width: 100%; 
+            padding: 18px; 
+            border: 2px solid #ddd; 
+            border-radius: 12px; 
+            font-size: 18px; 
+            margin-top: 10px; 
+            background: #fff;
+        }
         
-        .btn-submit { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-submit { 
+            width: 100%; 
+            padding: 22px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 1.2em; 
+            font-weight: 700; 
+            margin-top: 20px; 
+            box-shadow: 0 4px 10px rgba(44, 62, 80, 0.3);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
-        <div class="version">v3.1.1</div>
+        <div class="version">v1.1.1</div>
     </div>
     <h1>Manutenção de Empilhadores</h1>
     <form id="manutencaoForm">
@@ -84,7 +129,6 @@
         <div id="checklistItems"></div>
         <div class="card">
             <label>U. Outras observações</label>
-            <span class="description">Indicar anomalias (limpeza, adornos, pintura, etc.)</span>
             <textarea id="obs" rows="3"></textarea>
         </div>
         <div class="card">
@@ -134,6 +178,7 @@
         formData.horas = document.getElementById('horas').value;
         fetch('https://script.google.com/macros/s/AKfycbyczR7UvxIY7EWDVZXu6kIEDcLLOY1LxiQdvoF3AdQkSfu7GC3U91a6nacXVs7GBTYMEQ/exec', { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) }).then(() => { alert('Enviado!'); location.reload(); });
     });
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
 </script>
 </body>
 </html>
