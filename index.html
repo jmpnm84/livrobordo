@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
     <title>Livro de Bordo de Manutenção</title>
     <style>
         :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #ffffff; }
@@ -82,7 +83,7 @@
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
-        <div class="version">v2.3.6</div>
+        <div class="version">v2.3.7</div>
     </div>
     <h1>Livro de Bordo de Manutenção</h1>
     <form id="manutencaoForm">
@@ -131,6 +132,11 @@
     </form>
 </div>
 <script>
+    // Registo do Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+
     const icons = {testar: "https://github.com/user-attachments/assets/c2c7b561-23f1-48c3-8dc7-727cfba486c2", auditivo: "https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5", visual: "https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832"};
     const items = [
         {t: "A. Fugas de óleo", desc: "Gotas/óleo no chão", ic: ['visual']},
