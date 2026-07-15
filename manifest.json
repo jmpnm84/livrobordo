@@ -1,14 +1,19 @@
 {
-    "name": "Manutenção Empilhadores",
+    "name": "Manutenção de Empilhadores",
     "short_name": "Manutenção",
     "start_url": "index.html",
     "display": "standalone",
-    "background_color": "#f4f4f9",
+    "background_color": "#f4f7f6",
     "theme_color": "#2c3e50",
     "icons": [
         {
-            "src": "icon.png",
-            "sizes": "192x192",
+            "src": "https://github.com/user-attachments/assets/c7004c96-cf67-4dc6-a0ee-78a7d513e893",
+            "sizes": "225x225",
+            "type": "image/png"
+        },
+        {
+            "src": "https://github.com/user-attachments/assets/9aaa03dd-8ae6-4a01-8066-733bbc8e4b24",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ]
