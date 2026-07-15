@@ -2,33 +2,35 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Manutenção de Empilhadores</title>
     <style>
         :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
         
-        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: #333; font-size: 18px; }
+        /* Ajustes para preencher toda a largura */
+        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 10px; color: #333; font-size: 18px; }
         
-        .container { max-width: 600px; margin: auto; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .logo-area img { height: 50px; width: auto; }
-        .version { font-size: 1em; color: #7f8c8d; font-weight: bold; }
+        .container { width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; }
         
-        h1 { text-align: center; color: var(--primary); font-size: 1.8em; margin-bottom: 25px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
+        .logo-area img { height: 45px; width: auto; }
+        .version { font-size: 0.9em; color: #7f8c8d; font-weight: bold; }
         
-        .card { background: #ffffff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: var(--primary); font-size: 1.5em; margin-bottom: 20px; }
         
-        .header-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .card { background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #eee; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        label { font-weight: 700; display: block; margin-bottom: 8px; font-size: 1.1em; line-height: 1.4; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
         
-        .description { font-size: 0.9em; color: #555; font-style: italic; display: block; margin-bottom: 15px; line-height: 1.5; }
+        label { font-weight: 700; display: block; margin-bottom: 5px; font-size: 1.05em; }
         
-        .icon-container { display: flex; gap: 12px; flex-shrink: 0; }
-        .icon-container img { width: 35px; height: 35px; object-fit: contain; }
+        .description { font-size: 0.85em; color: #555; font-style: italic; display: block; margin-bottom: 12px; line-height: 1.4; }
         
-        .radio-group { display: flex; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
-        .radio-group label { flex: 1; min-width: 45%; text-align: center; padding: 15px; background: #f8f8f8; border-radius: 10px; cursor: pointer; transition: 0.2s; font-weight: bold; font-size: 1em; border: 1px solid #ddd; margin: 0; }
+        .icon-container { display: flex; gap: 8px; flex-shrink: 0; }
+        .icon-container img { width: 30px; height: 30px; object-fit: contain; }
+        
+        .radio-group { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .radio-group label { flex: 1; min-width: 42%; text-align: center; padding: 14px 10px; background: #f8f8f8; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: bold; font-size: 0.95em; border: 1px solid #ddd; margin: 0; }
         
         input[type="radio"] { display: none; }
         
@@ -36,16 +38,16 @@
         .radio-nok:has(input:checked) { background: var(--danger); color: white; border-color: var(--danger); }
         .radio-machine:has(input:checked) { background: var(--primary); color: white; border-color: var(--primary); }
         
-        select, input[type="text"], textarea { width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 18px; margin-top: 8px; background: white; }
+        select, input[type="text"], textarea { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; margin-top: 5px; background: white; }
         
-        .btn-submit { width: 100%; padding: 22px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.3em; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
-        <div class="version">v2.1.1</div>
+        <div class="version">v3.1.1</div>
     </div>
     <h1>Manutenção de Empilhadores</h1>
     <form id="manutencaoForm">
@@ -82,12 +84,11 @@
         <div id="checklistItems"></div>
         <div class="card">
             <label>U. Outras observações</label>
-            <span class="description">Indicar as anomalias detectadas em outros elementos que não apareçam nesta lista (limpeza geral, eliminação de adornos, pintura deteriorada e outros elementos no empilhador)</span>
+            <span class="description">Indicar anomalias (limpeza, adornos, pintura, etc.)</span>
             <textarea id="obs" rows="3"></textarea>
         </div>
         <div class="card">
             <label>V. Anotação contador de horas</label>
-            <span class="description">Anotar as horas que aparecem no contador existente</span>
             <input type="text" id="horas" required>
         </div>
         <button type="submit" class="btn-submit">Submeter Registo</button>
@@ -97,25 +98,25 @@
     const icons = {testar: "https://github.com/user-attachments/assets/c2c7b561-23f1-48c3-8dc7-727cfba486c2", auditivo: "https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5", visual: "https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832"};
     const items = [
         {t: "A. Fugas de óleo", desc: "Gotas/óleo no chão", ic: ['visual']},
-        {t: "B. Pneumáticos e parafusos das rodas", desc: "Cortes nos pneus, deformações - parafusos soltos", ic: ['visual']},
-        {t: "C. Garfos", desc: "Deformação dos garfos - se existir sistema a deslocação dos garfos verificar o seu funcionamento", ic: ['visual']},
-        {t: "D. Engate de tração", desc: "- Parafusos de fixação e estado do eixo e bola de reboque", ic: ['visual']},
-        {t: "E. Cadeados de elevação dos garfos", desc: "Estado - verificar se os garfos não se arrastam pelo chão - durante a condução, ganchos ou retenções das correntes e barulhos anormais", ic: ['visual', 'auditivo']},
-        {t: "F. Rolamentos e mastro", desc: "Verificar no interior da torre se está algo a roçar - durante a condução os ruídos típicos de rolamentos em mau estado", ic: ['visual', 'auditivo']},
-        {t: "G. Autonomia bateria / combustível", desc: "- Verificar os indicadores", ic: ['visual']},
-        {t: "H. Níveis de fluidos", desc: "- Mediante indicadores de nível: óleo motor, água, líquido dos travões - no depósito (se visível), óleo hidráulico: levantar os garfos ao máximo e comprovar que não se produzem vibrações", ic: ['visual', 'testar']},
-        {t: "I. Bateria (estado, cabos e conector)", desc: "Terminais e cabos não têm corrosão - conectores apresentam sobreaquecimentos por mau contacto - ver se existe cabos descarnados ou cortados", ic: ['visual']},
-        {t: "J. Proteção do condutor (apoio, tejadilho, cabine)", desc: "Estado dos elementos e seus acessórios", ic: ['visual']},
-        {t: "K. Tejadilho", desc: "Verificar se está limpo e em bom estado; se é possível ver através do tejadilho", ic: ['visual']},
-        {t: "L. Dispositivo de presença do condutor", desc: "Verificar do posto de condução o seu funcionamento", ic: ['testar']},
-        {t: "M. Travões de serviço e imobilização (1)", desc: "Verificar o seu funcionamento", ic: ['testar']},
-        {t: "N. Pedal de segurança", desc: "Verificar o seu funcionamento", ic: ['testar']},
-        {t: "O. Buzina, pirilampo luminoso", desc: "Verificar o seu funcionamento", ic: ['testar']},
-        {t: "P. Luzes e piscas (nas que existem)", desc: "Verificar o seu funcionamento", ic: ['testar']},
-        {t: "Q. Elevação e inclinação dos garfos", desc: "Verificar o seu funcionamento", ic: ['testar']},
-        {t: "R. Chave de ignição", desc: "Verificar o seu funcionamento", ic: ['testar']},
-        {t: "S. Direcção", desc: "Verificar o seu funcionamento", ic: ['testar']},
-        {t: "T. Cinto de segurança", desc: "Verificar o seu funcionamento", ic: ['testar']}
+        {t: "B. Pneumáticos", desc: "Cortes, deformações, parafusos soltos", ic: ['visual']},
+        {t: "C. Garfos", desc: "Deformação e funcionamento", ic: ['visual']},
+        {t: "D. Engate de tração", desc: "Parafusos, eixo e bola de reboque", ic: ['visual']},
+        {t: "E. Cadeados e correntes", desc: "Estado, arrastamento e ruídos", ic: ['visual', 'auditivo']},
+        {t: "F. Rolamentos e mastro", desc: "Ruídos anormais", ic: ['visual', 'auditivo']},
+        {t: "G. Autonomia", desc: "Verificar indicadores", ic: ['visual']},
+        {t: "H. Níveis de fluidos", desc: "Óleo motor, água, travões, vibrações", ic: ['visual', 'testar']},
+        {t: "I. Bateria", desc: "Terminais, cabos e conectores", ic: ['visual']},
+        {t: "J. Proteção do condutor", desc: "Estado do tejadilho/cabine", ic: ['visual']},
+        {t: "K. Tejadilho", desc: "Limpeza e visibilidade", ic: ['visual']},
+        {t: "L. Dispositivo presença", desc: "Funcionamento", ic: ['testar']},
+        {t: "M. Travões", desc: "Funcionamento", ic: ['testar']},
+        {t: "N. Pedal segurança", desc: "Funcionamento", ic: ['testar']},
+        {t: "O. Buzina/Pirilampo", desc: "Funcionamento", ic: ['testar']},
+        {t: "P. Luzes/Piscas", desc: "Funcionamento", ic: ['testar']},
+        {t: "Q. Elevação/Inclinação", desc: "Funcionamento", ic: ['testar']},
+        {t: "R. Ignição", desc: "Funcionamento", ic: ['testar']},
+        {t: "S. Direcção", desc: "Funcionamento", ic: ['testar']},
+        {t: "T. Cinto segurança", desc: "Funcionamento", ic: ['testar']}
     ];
     const container = document.getElementById('checklistItems');
     items.forEach((item, index) => {
