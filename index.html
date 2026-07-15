@@ -33,7 +33,7 @@
             margin-bottom: 20px; 
             border: 2px solid #ddd;
             scroll-snap-align: start;
-            min-height: 320px; /* Aumentado ligeiramente para acomodar ícones maiores */
+            min-height: 320px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -41,9 +41,10 @@
         
         .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; gap: 10px;}
         label { font-weight: bold; font-size: 26px; color: #000; line-height: 1.2; }
-        .description { font-size: 22px; color: #444; margin-bottom: 15px; display: block; }
         
-        /* Ajuste das imagens - Aumentado para 80px */
+        /* Descrições em itálico */
+        .description { font-size: 22px; color: #444; margin-bottom: 15px; display: block; font-style: italic; }
+        
         .icon-container { display: flex; gap: 15px; flex-shrink: 0; }
         .icon-container img { 
             width: 80px; 
@@ -77,7 +78,7 @@
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
-        <div class="version">v2.4.1</div>
+        <div class="version">v2.2.1</div>
     </div>
     <h1>Manutenção</h1>
     <form id="manutencaoForm">
