@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -11,6 +10,7 @@
         h1 { color: #2c3e50; font-size: 1.5em; text-align: center; }
         .form-group { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .description { display: block; font-style: italic; font-size: 0.85em; color: #666; margin-bottom: 8px; }
         input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         .radio-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px; }
         .radio-group label { font-weight: normal; cursor: pointer; }
@@ -23,6 +23,7 @@
         <h1>Livro de Bordo - Manutenção</h1>
         <form id="manutencaoForm">
             <div class="form-group"><label>1. Nome do condutor</label><input type="text" required></div>
+            
             <div class="form-group"><label>2. Deslocação</label>
                 <div class="radio-group">
                     <label><input type="radio" name="deslocacao" value="Manhã" required> Manhã</label>
@@ -30,6 +31,7 @@
                     <label><input type="radio" name="deslocacao" value="Noite" required> Noite</label>
                 </div>
             </div>
+
             <div class="form-group"><label>3. Máquina</label>
                 <div class="radio-group">
                     <label><input type="radio" name="maquina" value="Linde E16" required> Linde E16</label>
@@ -41,8 +43,14 @@
             
             <div id="checklistItems"></div>
 
-            <div class="form-group"><label>U. Outras observações</label><textarea rows="3"></textarea></div>
-            <div class="form-group"><label>V. Contador de horas</label><input type="text" required></div>
+            <div class="form-group"><label>U. Outras observações</label>
+                <span class="description">indicar as anomalias detectadas em outros elementos que não apareçam nesta lista (limpeza geral, eliminação de adornos, pintura deteriorada e outros elementos no empilhador)</span>
+                <textarea rows="3"></textarea>
+            </div>
+            <div class="form-group"><label>V. Contador de horas</label>
+                <span class="description">anotar as horas que aparecem no contador existente</span>
+                <input type="text" required>
+            </div>
 
             <button type="submit" class="btn-submit">Submeter Registo</button>
         </form>
@@ -50,13 +58,26 @@
 
     <script>
         const items = [
-            "A - Fugas de óleo", "B - Pneumáticos e rodas", "C - Garfos", 
-            "D - Engate de tração", "E - Cadeados de elevação", "F - Rolamentos e mastro", 
-            "G - Autonomia bateria/combustível", "H - Níveis de fluidos", "I - Bateria (cabos/conector)", 
-            "J - Proteção do condutor", "K - Tejadilho", "L - Dispositivo de presença", 
-            "M - Travões", "N - Pedal de segurança", "O - Buzina/pirilampo", 
-            "P - Luzes e piscas", "Q - Elevação e inclinação", "R - Chave de ignição", 
-            "S - Direcção", "T - Cinto de segurança"
+            {t: "A. Gotas/óleo no chão", d: "verificar a existência de fugas de fluidos sob o equipamento."},
+            {t: "B. Cortes nos pneus, deformações e parafusos soltos", d: "inspecionar o estado geral da borracha e a fixação das rodas."},
+            {t: "C. Deformação dos garfos - se existir sistema de deslocação dos garfos verificar o seu funcionamento", d: "avaliar a integridade estrutural dos garfos e a fluidez do mecanismo de posicionamento."},
+            {t: "D. Parafusos de fixação e estado do eixo e bola de reboque", d: "confirmar o aperto das fixações e a integridade do sistema de reboque."},
+            {t: "E. Estado - verificar se os garfos não se arrastam pelo chão", d: "durante a condução, ganchos ou retenções das correntes e barulhos anormais."},
+            {t: "F. Verificar no interior da torre se está algo a roçar", d: "durante a condução, ruídos típicos de rolamentos em mau estado."},
+            {t: "G. Verificar os indicadores", d: "confirmar se todos os mostradores e luzes de aviso do painel funcionam corretamente."},
+            {t: "H. Mediante indicadores de nível", d: "óleo motor, água, líquido dos travões, óleo hidráulico: levantar os garfos ao máximo e comprovar que não se produzem vibrações."},
+            {t: "I. Terminais e cabos", d: "não têm corrosão, conectores apresentam sobreaquecimentos por mau contacto, ver se existe cabos descarnados ou cortados."},
+            {t: "J. Estado dos elementos e seus acessórios", d: "verificar a integridade física de todos os componentes periféricos e peças acopladas."},
+            {t: "K. Verificar se está limpo e em bom estado", d: "se é possível ver através do tejadilho."},
+            {t: "L. Verificar do posto de condução o seu funcionamento", d: "testar todos os comandos operacionais a partir da posição de condução."},
+            {t: "M. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
+            {t: "N. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
+            {t: "O. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
+            {t: "P. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
+            {t: "Q. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
+            {t: "R. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
+            {t: "S. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."},
+            {t: "T. Verificar o seu funcionamento", d: "realizar um teste funcional completo deste componente."}
         ];
         
         const container = document.getElementById('checklistItems');
@@ -64,7 +85,8 @@
             const div = document.createElement('div');
             div.className = 'form-group';
             div.innerHTML = `
-                <label>${item}</label>
+                <label>${item.t}</label>
+                <span class="description">${item.d}</span>
                 <div class="radio-group">
                     <label><input type="radio" name="item_${index}" value="OK" required> OK</label>
                     <label><input type="radio" name="item_${index}" value="NOK" required> NOK</label>
@@ -76,8 +98,7 @@
 
         document.getElementById('manutencaoForm').onsubmit = (e) => {
             e.preventDefault();
-            const maquinaSelecionada = document.querySelector('input[name="maquina"]:checked').value;
-            alert("Registo submetido com sucesso para a máquina: " + maquinaSelecionada);
+            alert("Registo submetido com sucesso!");
         };
     </script>
 </body>
