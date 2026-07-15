@@ -4,74 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manutenção de Empilhadores</title>
-    <meta name="theme-color" content="#ffffff">
     <style>
-        :root { 
-            --primary: #2c3e50; 
-            --success: #27ae60; 
-            --danger: #e74c3c; 
-            --bg: #ffffff; /* Fundo branco conforme solicitado */
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; color: #333; }
+        :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #ffffff; }
+        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 500px; margin: auto; }
-        
-        /* Top Bar: Logo à esquerda, Versão à direita */
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .logo-area img { height: 40px; width: auto; }
         .version { font-size: 0.8em; color: #7f8c8d; font-weight: bold; }
-        
         h1 { text-align: center; color: var(--primary); font-size: 1.4em; margin-bottom: 20px; }
-        
-        /* Estilo dos cards com borda suave para contraste no fundo branco */
         .card { background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
         .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-        
         label { font-weight: 600; display: block; margin-bottom: 5px; font-size: 0.95em; }
         .description { font-size: 0.8em; color: #7f8c8d; font-style: italic; display: block; margin-bottom: 12px; }
-
         .icon-container { display: flex; gap: 8px; flex-shrink: 0; }
         .icon-container img { width: 50px; height: 50px; object-fit: contain; }
-
         .radio-group { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
         .radio-group label { flex: 1; min-width: 40%; text-align: center; padding: 12px; background: #f8f8f8; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: bold; font-size: 0.9em; border: 1px solid #eee; }
-        
         input[type="radio"] { display: none; }
         .radio-ok:has(input:checked) { background: var(--success); color: white; border-color: var(--success); }
         .radio-nok:has(input:checked) { background: var(--danger); color: white; border-color: var(--danger); }
         .radio-machine:has(input:checked) { background: var(--primary); color: white; border-color: var(--primary); }
-
         input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; margin-top: 5px; }
         .btn-submit { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="top-bar">
-        <div class="logo-area">
-            <img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo">
-        </div>
-        <div class="version">v1.0.0</div>
+        <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
+        <div class="version">v1.1.0</div>
     </div>
-
     <h1>Manutenção de Empilhadores</h1>
     <form id="manutencaoForm">
-        <div class="card">
-            <label>Nome do condutor</label>
-            <input type="text" required>
-        </div>
-
-        <div class="card">
-            <label>Deslocação</label>
+        <div class="card"><label>Nome do condutor</label><input type="text" id="nome" required></div>
+        <div class="card"><label>Turno</label>
             <div class="radio-group">
-                <label class="radio-ok"><input type="radio" name="deslocacao" value="Manhã" required> Manhã</label>
-                <label class="radio-ok"><input type="radio" name="deslocacao" value="Tarde" required> Tarde</label>
-                <label class="radio-ok"><input type="radio" name="deslocacao" value="Noite" required> Noite</label>
+                <label class="radio-ok"><input type="radio" name="turno" value="Manhã" required> Manhã</label>
+                <label class="radio-ok"><input type="radio" name="turno" value="Tarde" required> Tarde</label>
+                <label class="radio-ok"><input type="radio" name="turno" value="Noite" required> Noite</label>
             </div>
         </div>
-
-        <div class="card">
-            <label>Máquina</label>
+        <div class="card"><label>Máquina</label>
             <div class="radio-group">
                 <label class="radio-machine"><input type="radio" name="maquina" value="Linde E16" required> Linde E16</label>
                 <label class="radio-machine"><input type="radio" name="maquina" value="Linde E20" required> Linde E20</label>
@@ -79,85 +52,38 @@
                 <label class="radio-machine"><input type="radio" name="maquina" value="Linde P60" required> Linde P60</label>
             </div>
         </div>
-
         <div id="checklistItems"></div>
-
-        <div class="card">
-            <div class="header-row">
-                <div>
-                    <label>U. Outras observações</label>
-                    <span class="description">anomalias detetadas</span>
-                </div>
-                <div class="icon-container">
-                    <img src="https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832" alt="visual">
-                    <img src="https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5" alt="auditivo">
-                </div>
-            </div>
-            <textarea rows="3"></textarea>
-        </div>
-
-        <div class="card">
-            <div class="header-row">
-                <label>V. Contador de horas</label>
-                <img src="https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832" alt="visual" style="width: 50px; height: 50px;">
-            </div>
-            <input type="text" required placeholder="Inserir horas">
-        </div>
-
+        <div class="card"><div class="header-row"><div><label>U. Outras observações</label></div><div class="icon-container"><img src="https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832"><img src="https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5"></div></div><textarea id="obs" rows="3"></textarea></div>
+        <div class="card"><div class="header-row"><label>V. Contador de horas</label><img src="https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832" style="width: 50px; height: 50px;"></div><input type="text" id="horas" required></div>
         <button type="submit" class="btn-submit">Submeter Registo</button>
     </form>
 </div>
-
 <script>
-    const icons = {
-        testar: "https://github.com/user-attachments/assets/c2c7b561-23f1-48c3-8dc7-727cfba486c2",
-        auditivo: "https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5",
-        visual: "https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832"
-    };
-
+    const icons = {testar: "https://github.com/user-attachments/assets/c2c7b561-23f1-48c3-8dc7-727cfba486c2", auditivo: "https://github.com/user-attachments/assets/2a8ab473-1627-4e32-aac5-c1225c3e6cf5", visual: "https://github.com/user-attachments/assets/cb49c6b4-f03a-448e-905a-357d38621832"};
     const items = [
-        {t: "A. Gotas/óleo no chão", d: "verificar fugas.", ic: ['visual']},
-        {t: "B. Cortes nos pneus", d: "inspecionar estado geral.", ic: ['visual']},
-        {t: "C. Deformação dos garfos", d: "avaliar integridade.", ic: ['visual']},
-        {t: "D. Parafusos de fixação", d: "confirmar o aperto.", ic: ['visual']},
-        {t: "E. Arrastamento de garfos e correntes", d: "observar ruídos.", ic: ['visual', 'auditivo']},
-        {t: "F. Interior da torre", d: "verificar ruídos.", ic: ['visual', 'auditivo']},
-        {t: "G. Indicadores", d: "confirmar luzes.", ic: ['visual']},
-        {t: "H. Níveis de fluidos", d: "óleo, água, travões.", ic: ['visual', 'testar']},
-        {t: "I. Terminais elétricos", d: "verificar corrosão.", ic: ['visual']},
-        {t: "J. Elementos e acessórios", d: "integridade geral.", ic: ['visual']},
-        {t: "K. Limpeza e tejadilho", d: "visibilidade.", ic: ['visual']},
-        {t: "L. Posto de condução", d: "testar todos os comandos.", ic: ['testar']},
-        {t: "M. Funcionamento geral", d: "testar componente.", ic: ['testar']},
-        {t: "N. Funcionamento geral", d: "testar componente.", ic: ['testar']},
-        {t: "O. Funcionamento geral", d: "testar componente.", ic: ['testar']},
-        {t: "P. Funcionamento geral", d: "testar componente.", ic: ['testar']},
-        {t: "Q. Funcionamento geral", d: "testar componente.", ic: ['testar']},
-        {t: "R. Funcionamento geral", d: "testar componente.", ic: ['testar']},
-        {t: "S. Funcionamento geral", d: "testar componente.", ic: ['testar']},
-        {t: "T. Funcionamento geral", d: "testar componente.", ic: ['testar']}
+        {t: "A. Gotas/óleo no chão", ic: ['visual']}, {t: "B. Cortes nos pneus", ic: ['visual']}, {t: "C. Deformação dos garfos", ic: ['visual']}, {t: "D. Parafusos de fixação", ic: ['visual']},
+        {t: "E. Arrastamento de garfos e correntes", ic: ['visual', 'auditivo']}, {t: "F. Interior da torre", ic: ['visual', 'auditivo']}, {t: "G. Indicadores", ic: ['visual']}, {t: "H. Níveis de fluidos", ic: ['visual', 'testar']},
+        {t: "I. Terminais elétricos", ic: ['visual']}, {t: "J. Elementos e acessórios", ic: ['visual']}, {t: "K. Limpeza e tejadilho", ic: ['visual']}, {t: "L. Posto de condução", ic: ['testar']},
+        {t: "M. Funcionamento geral", ic: ['testar']}, {t: "N. Funcionamento geral", ic: ['testar']}, {t: "O. Funcionamento geral", ic: ['testar']}, {t: "P. Funcionamento geral", ic: ['testar']},
+        {t: "Q. Funcionamento geral", ic: ['testar']}, {t: "R. Funcionamento geral", ic: ['testar']}, {t: "S. Funcionamento geral", ic: ['testar']}, {t: "T. Funcionamento geral", ic: ['testar']}
     ];
-
     const container = document.getElementById('checklistItems');
     items.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        const iconsHtml = item.ic.map(i => `<img src="${icons[i]}" alt="${i}">`).join('');
-        div.innerHTML = `
-            <div class="header-row">
-                <div>
-                    <label>${item.t}</label>
-                    <span class="description">${item.d}</span>
-                </div>
-                <div class="icon-container">${iconsHtml}</div>
-            </div>
-            <div class="radio-group">
-                <label class="radio-ok"><input type="radio" name="item_${index}" value="OK" required> OK</label>
-                <label class="radio-nok"><input type="radio" name="item_${index}" value="NOK" required> NOK</label>
-            </div>
-            <input type="text" placeholder="Explicar se NOK">
-        `;
+        const div = document.createElement('div'); div.className = 'card';
+        div.innerHTML = `<div class="header-row"><label>${item.t}</label><div class="icon-container">${item.ic.map(i=>`<img src="${icons[i]}">`).join('')}</div></div>
+        <div class="radio-group"><label class="radio-ok"><input type="radio" name="item_${index}" value="OK" required> OK</label><label class="radio-nok"><input type="radio" name="item_${index}" value="NOK" required> NOK</label></div>`;
         container.appendChild(div);
+    });
+    document.getElementById('manutencaoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let formData = { nome: document.getElementById('nome').value, turno: document.querySelector('input[name="turno"]:checked').value, maquina: document.querySelector('input[name="maquina"]:checked').value,
+            a: document.querySelector('input[name="item_0"]:checked').value, b: document.querySelector('input[name="item_1"]:checked').value, c: document.querySelector('input[name="item_2"]:checked').value, d: document.querySelector('input[name="item_3"]:checked').value,
+            e: document.querySelector('input[name="item_4"]:checked').value, f: document.querySelector('input[name="item_5"]:checked').value, g: document.querySelector('input[name="item_6"]:checked').value, h: document.querySelector('input[name="item_7"]:checked').value,
+            i: document.querySelector('input[name="item_8"]:checked').value, j: document.querySelector('input[name="item_9"]:checked').value, k: document.querySelector('input[name="item_10"]:checked').value, l: document.querySelector('input[name="item_11"]:checked').value,
+            m: document.querySelector('input[name="item_12"]:checked').value, n: document.querySelector('input[name="item_13"]:checked').value, o: document.querySelector('input[name="item_14"]:checked').value, p: document.querySelector('input[name="item_15"]:checked').value,
+            q: document.querySelector('input[name="item_16"]:checked').value, r: document.querySelector('input[name="item_17"]:checked').value, s: document.querySelector('input[name="item_18"]:checked').value, t: document.querySelector('input[name="item_19"]:checked').value,
+            observacoes: document.getElementById('obs').value, horas: document.getElementById('horas').value };
+        fetch('https://script.google.com/macros/s/AKfycbyczR7UvxIY7EWDVZXu6kIEDcLLOY1LxiQdvoF3AdQkSfu7GC3U91a6nacXVs7GBTYMEQ/exec', { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) }).then(() => { alert('Enviado!'); location.reload(); });
     });
 </script>
 </body>
