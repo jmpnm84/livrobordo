@@ -1,6 +1,6 @@
 {
-    "name": "Manutenção de Empilhadores",
-    "short_name": "Manutenção",
+    "name": "Livro de Bordo",
+    "short_name": "Livro de Bordo",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#f4f7f6",
