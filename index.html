@@ -190,7 +190,7 @@
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
-        <div class="version">v2.5.2</div>
+        <div class="version">v2.5.3</div>
     </div>
     <h1>Livro de Bordo de Manutenção</h1>
     <form id="manutencaoForm">
@@ -308,8 +308,8 @@
     }
 
     function calculateAutoZoom() {
-        const windowWidth = window.innerWidth - 20; // accounting for padding
-        const targetWidth = 850; // container max-width
+        const windowWidth = window.innerWidth;
+        const targetWidth = 850;
         let autoScale = windowWidth / targetWidth;
         if (autoScale > 1) autoScale = 1; 
         updateZoom(autoScale);
