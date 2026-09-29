@@ -21,6 +21,59 @@
             -webkit-text-size-adjust: 100%;
         }
         
+        /* Zoom wrapper wrapper for scaling */
+        #zoomWrapper {
+            transform-origin: top center;
+            transition: transform 0.15s ease-out;
+            width: 100%;
+        }
+
+        /* Floating Zoom Widget Styling */
+        .zoom-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .zoom-widget button {
+            background: #ffffff;
+            color: var(--primary);
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .zoom-widget button:active {
+            transform: scale(0.95);
+        }
+
+        .zoom-widget span {
+            font-size: 32px;
+            font-weight: bold;
+            min-width: 90px;
+            text-align: center;
+        }
+        
         .container { width: 100%; max-width: 850px; margin: 0 auto; }
         
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; background: white; padding: 40px; border-radius: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);}
@@ -87,9 +140,42 @@
             border: none; border-radius: 30px; font-size: 44px; font-weight: bold; 
             margin-bottom: 100px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.25);
         }
+
+        /* Custom Message Box styling to avoid alert() */
+        #customModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        #customModalContent {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            font-size: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        #customModalBtn {
+            margin-top: 40px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 30px 60px;
+            font-size: 36px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+<div id="zoomWrapper">
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
@@ -144,6 +230,24 @@
         <button type="submit" class="btn-submit">Submeter Registo</button>
     </form>
 </div>
+</div>
+
+<!-- Floating Zoom Widget -->
+<div class="zoom-widget">
+    <button type="button" id="zoomOut" title="Diminuir Zoom">-</button>
+    <span id="zoomLabel">100%</span>
+    <button type="button" id="zoomIn" title="Aumentar Zoom">+</button>
+    <button type="button" id="zoomReset" title="Ajuste Automático" style="font-size: 24px; width: 60px; height: 60px;">Auto</button>
+</div>
+
+<!-- Custom Modal Box replacement for alert() -->
+<div id="customModal">
+    <div id="customModalContent">
+        <p id="customModalText">Enviado!</p>
+        <button type="button" id="customModalBtn">OK</button>
+    </div>
+</div>
+
 <script>
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
@@ -178,18 +282,56 @@
                 <label>${item.t}</label>
                 <span class="description">${item.desc}</span>
             </div>
-            <div class="icon-container">${item.ic.map(i=>`<img src="${icons[i]}">`).join('')}</div>
+            <div class="icon-container">${item.ic.map(i=>`<img src="${icons[i]}" alt="ícone">`).join('')}</div>
         </div>
         <div class="radio-group"><label class="radio-ok"><input type="radio" name="item_${index}" value="OK" required> OK</label><label class="radio-nok"><input type="radio" name="item_${index}" value="NOK" required> NOK</label></div>`;
         container.appendChild(div);
     });
+
+    let currentZoom = 1;
+
+    function updateZoom(newZoom) {
+        currentZoom = Math.min(Math.max(newZoom, 0.4), 2.5);
+        document.getElementById('zoomWrapper').style.transform = `scale(${currentZoom})`;
+        document.getElementById('zoomLabel').innerText = Math.round(currentZoom * 100) + '%';
+    }
+
+    function calculateAutoZoom() {
+        const windowWidth = window.innerWidth - 40; // accounting for body padding
+        const targetWidth = 850; // container max-width
+        let autoScale = windowWidth / targetWidth;
+        if (autoScale > 1) autoScale = 1; // don't upscale beyond 100% on huge desktop screens unless desired, or keep to 1
+        updateZoom(autoScale);
+    }
+
+    document.getElementById('zoomIn').addEventListener('click', () => updateZoom(currentZoom + 0.1));
+    document.getElementById('zoomOut').addEventListener('click', () => updateZoom(currentZoom - 0.1));
+    document.getElementById('zoomReset').addEventListener('click', calculateAutoZoom);
+
+    // Run auto zoom on load
+    window.addEventListener('load', calculateAutoZoom);
+    window.addEventListener('resize', () => {
+        // Optional: uncomment if you want live responsive auto adjustment on rotate/resize
+    });
+
+    function showModal(text, callback) {
+        document.getElementById('customModalText').innerText = text;
+        document.getElementById('customModal').style.display = 'flex';
+        document.getElementById('customModalBtn').onclick = function() {
+            document.getElementById('customModal').style.display = 'none';
+            if (callback) callback();
+        };
+    }
+
     document.getElementById('manutencaoForm').addEventListener('submit', function(e) {
         e.preventDefault();
         let formData = { nome: document.getElementById('nome').value, turno: document.querySelector('input[name="turno"]:checked').value, maquina: document.querySelector('input[name="maquina"]:checked').value };
         items.forEach((_, i) => { formData[`item_${i}`] = document.querySelector(`input[name="item_${i}"]:checked`).value; });
         formData.observacoes = document.getElementById('obs').value;
         formData.horas = document.getElementById('horas').value;
-        fetch('https://script.google.com/macros/s/AKfycbyczR7UvxIY7EWDVZXu6kIEDcLLOY1LxiQdvoF3AdQkSfu7GC3U91a6nacXVs7GBTYMEQ/exec', { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) }).then(() => { alert('Enviado!'); location.reload(); });
+        fetch('https://script.google.com/macros/s/AKfycbyczR7UvxIY7EWDVZXu6kIEDcLLOY1LxiQdvoF3AdQkSfu7GC3U91a6nacXVs7GBTYMEQ/exec', { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) }).then(() => { 
+            showModal('Enviado!', () => { location.reload(); }); 
+        });
     });
 </script>
 </body>
