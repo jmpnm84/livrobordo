@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <link rel="manifest" href="manifest.json">
     <title>Livro de Bordo</title>
     <style>
@@ -14,33 +14,35 @@
             font-family: sans-serif; 
             background-color: #f4f4f4; 
             margin: 0; 
-            padding: 20px;
+            padding: 10px;
             color: #000; 
-            font-size: 36px; 
-            line-height: 1.5;
+            font-size: 18px; 
+            line-height: 1.4;
             -webkit-text-size-adjust: 100%;
+            overflow-x: hidden;
         }
         
-        /* Zoom wrapper wrapper for scaling */
+        /* Zoom wrapper for scaling */
         #zoomWrapper {
             transform-origin: top center;
             transition: transform 0.15s ease-out;
             width: 100%;
+            max-width: 100%;
         }
 
         /* Floating Zoom Widget Styling */
         .zoom-widget {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 20px;
+            right: 20px;
             background: rgba(44, 62, 80, 0.95);
             color: white;
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            gap: 10px;
+            padding: 10px 15px;
+            border-radius: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
             z-index: 9999;
             backdrop-filter: blur(5px);
             border: 2px solid rgba(255,255,255,0.2);
@@ -50,16 +52,16 @@
             background: #ffffff;
             color: var(--primary);
             border: none;
-            width: 70px;
-            height: 70px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            font-size: 40px;
+            font-size: 24px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: background 0.2s, transform 0.1s;
         }
 
@@ -68,60 +70,65 @@
         }
 
         .zoom-widget span {
-            font-size: 32px;
+            font-size: 18px;
             font-weight: bold;
-            min-width: 90px;
+            min-width: 60px;
             text-align: center;
         }
         
-        .container { width: 100%; max-width: 850px; margin: 0 auto; }
+        .container { width: 100%; max-width: 850px; margin: 0 auto; padding: 0 5px; }
         
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; background: white; padding: 40px; border-radius: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);}
-        .logo-area img { height: 130px; width: auto; max-width: 100%; }
-        .version { font-size: 34px; color: #555; font-weight: bold; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); width: 100%; }
+        .logo-area img { height: 60px; width: auto; max-width: 100%; }
+        .version { font-size: 20px; color: #555; font-weight: bold; }
         
-        h1 { text-align: center; color: var(--primary); font-size: 60px; margin-bottom: 60px; }
+        h1 { text-align: center; color: var(--primary); font-size: 28px; margin-bottom: 30px; padding: 0 10px; word-break: break-word; }
         
         .card { 
             background: #ffffff; 
-            padding: 60px; 
-            border-radius: 35px; 
-            margin-bottom: 50px; 
-            border: 4px solid #ddd;
+            padding: 20px; 
+            border-radius: 20px; 
+            margin-bottom: 20px; 
+            border: 3px solid #ddd;
             display: flex;
             flex-direction: column;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
         }
         
-        .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; gap: 30px;}
-        .text-column { display: flex; flex-direction: column; }
-        label { font-weight: bold; font-size: 44px; color: #000; line-height: 1.2; display: block; }
+        .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; gap: 15px; width: 100%; }
+        .text-column { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+        label { font-weight: bold; font-size: 22px; color: #000; line-height: 1.2; display: block; word-break: break-word; overflow-wrap: break-word; }
         
-        .description { font-size: 36px; color: #444; display: block; font-style: italic; margin-top: 20px; }
+        .description { font-size: 16px; color: #444; display: block; font-style: italic; margin-top: 8px; word-break: break-word; overflow-wrap: break-word; }
         
-        .icon-container { display: flex; gap: 30px; flex-shrink: 0; }
-        .icon-container img { width: 150px; height: 150px; object-fit: contain; }
+        .icon-container { display: flex; gap: 10px; flex-shrink: 0; }
+        .icon-container img { width: 45px; height: 45px; object-fit: contain; }
         
-        .radio-group { display: flex; gap: 40px; margin-top: 45px; }
+        .radio-group { display: flex; gap: 15px; margin-top: 15px; width: 100%; }
         
-        .radio-group-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-top: 45px; }
+        .radio-group-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; width: 100%; }
         
         .radio-group label, .radio-group-2x2 label { 
             display: flex;
             align-items: center;
             justify-content: center;
             flex: 1; 
-            min-height: 140px;
+            min-height: 60px;
             text-align: center; 
-            padding: 30px; 
+            padding: 12px; 
             background: #f0f0f0; 
-            border-radius: 30px; 
+            border-radius: 15px; 
             cursor: pointer; 
-            font-size: 36px; 
+            font-size: 18px; 
             font-weight: bold; 
-            border: 4px solid #ccc; 
+            border: 3px solid #ccc; 
             transition: background 0.2s, border-color 0.2s;
             -webkit-user-select: none;
             user-select: none;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         
         input[type="radio"] { display: none; }
@@ -130,15 +137,15 @@
         .radio-machine:has(input:checked) { background: var(--primary) !important; color: white; border-color: #1a252f; }
         
         select, input[type="text"], textarea { 
-            width: 100%; padding: 40px; border: 5px solid #333; border-radius: 30px; 
-            font-size: 36px; margin-top: 40px; background: #fff; 
+            width: 100%; max-width: 100%; padding: 15px; border: 3px solid #333; border-radius: 15px; 
+            font-size: 18px; margin-top: 20px; background: #fff; 
             -webkit-appearance: none; appearance: none;
         }
         
         .btn-submit { 
-            width: 100%; padding: 60px; background: var(--primary); color: white; 
-            border: none; border-radius: 30px; font-size: 44px; font-weight: bold; 
-            margin-bottom: 100px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            width: 100%; padding: 25px; background: var(--primary); color: white; 
+            border: none; border-radius: 20px; font-size: 22px; font-weight: bold; 
+            margin-bottom: 80px; cursor: pointer; box-shadow: 0 6px 15px rgba(0,0,0,0.25);
         }
 
         /* Custom Message Box styling to avoid alert() */
@@ -153,24 +160,28 @@
         }
         #customModalContent {
             background: white;
-            padding: 50px;
-            border-radius: 30px;
+            padding: 30px;
+            border-radius: 20px;
             text-align: center;
-            max-width: 600px;
+            max-width: 450px;
             width: 90%;
-            font-size: 40px;
+            font-size: 22px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         #customModalBtn {
-            margin-top: 40px;
+            margin-top: 25px;
             background: var(--primary);
             color: white;
             border: none;
-            padding: 30px 60px;
-            font-size: 36px;
+            padding: 15px 30px;
+            font-size: 18px;
             font-weight: bold;
-            border-radius: 20px;
+            border-radius: 12px;
             cursor: pointer;
+        }
+
+        @media(max-width: 500px) {
+            .radio-group-2x2 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -179,7 +190,7 @@
 <div class="container">
     <div class="top-bar">
         <div class="logo-area"><img src="https://github.com/user-attachments/assets/49049ff4-b05c-45fb-9959-68260195e26b" alt="Logo"></div>
-        <div class="version">v2.5.0</div>
+        <div class="version">v2.5.2</div>
     </div>
     <h1>Livro de Bordo de Manutenção</h1>
     <form id="manutencaoForm">
@@ -237,7 +248,7 @@
     <button type="button" id="zoomOut" title="Diminuir Zoom">-</button>
     <span id="zoomLabel">100%</span>
     <button type="button" id="zoomIn" title="Aumentar Zoom">+</button>
-    <button type="button" id="zoomReset" title="Ajuste Automático" style="font-size: 24px; width: 60px; height: 60px;">Auto</button>
+    <button type="button" id="zoomReset" title="Ajuste Automático" style="font-size: 14px; width: 45px; height: 45px;">Auto</button>
 </div>
 
 <!-- Custom Modal Box replacement for alert() -->
@@ -297,10 +308,10 @@
     }
 
     function calculateAutoZoom() {
-        const windowWidth = window.innerWidth - 40; // accounting for body padding
+        const windowWidth = window.innerWidth - 20; // accounting for padding
         const targetWidth = 850; // container max-width
         let autoScale = windowWidth / targetWidth;
-        if (autoScale > 1) autoScale = 1; // don't upscale beyond 100% on huge desktop screens unless desired, or keep to 1
+        if (autoScale > 1) autoScale = 1; 
         updateZoom(autoScale);
     }
 
@@ -308,11 +319,9 @@
     document.getElementById('zoomOut').addEventListener('click', () => updateZoom(currentZoom - 0.1));
     document.getElementById('zoomReset').addEventListener('click', calculateAutoZoom);
 
-    // Run auto zoom on load
+    // Run auto zoom on load and resize
     window.addEventListener('load', calculateAutoZoom);
-    window.addEventListener('resize', () => {
-        // Optional: uncomment if you want live responsive auto adjustment on rotate/resize
-    });
+    window.addEventListener('resize', calculateAutoZoom);
 
     function showModal(text, callback) {
         document.getElementById('customModalText').innerText = text;
